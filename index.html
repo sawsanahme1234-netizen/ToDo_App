@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مذكرتي الذكية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .input-group input:focus {
+            border-color: #764ba2;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1);
+        }
+
+        .input-group button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .input-group button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        .input-group button:active {
+            transform: scale(0.95);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .stats span {
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        #taskList {
+            list-style: none;
+            padding: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #taskList::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #taskList::-webkit-scrollbar-thumb {
+            background: #764ba2;
+            border-radius: 10px;
+        }
+
+        #taskList li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            animation: fadeIn 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        #taskList li:hover {
+            border-color: #764ba2;
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #taskList li .task-text {
+            flex: 1;
+            font-size: 1em;
+            color: #333;
+            word-break: break-word;
+            margin-right: 10px;
+        }
+
+        #taskList li .task-text.done {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        #taskList li .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        #taskList li .actions button {
+            border: none;
+            background: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        #taskList li .actions .done-btn {
+            color: #28a745;
+        }
+
+        #taskList li .actions .done-btn:hover {
+            background: #28a74520;
+            transform: scale(1.2);
+        }
+
+        #taskList li .actions .delete-btn {
+            color: #dc3545;
+        }
+
+        #taskList li .actions .delete-btn:hover {
+            background: #dc354520;
+            transform: scale(1.2);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #ccc;
+            padding: 40px 0;
+            font-size: 1.1em;
+        }
+
+        .empty-message span {
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #ccc;
+            font-size: 0.8em;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 <span>مذكرتي</span></h1>
+        <p class="subtitle">✨ نظمي مهامك بذكاء</p>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="اكتب المهمة الجديدة..." />
+            <button onclick="addTask()">➕ أضف</button>
+        </div>
+
+        <div class="stats">
+            <span>📊 <span id="totalTasks">0</span> مهمة</span>
+            <span>✅ <span id="doneTasks">0</span> منجزة</span>
+        </div>
+
+        <ul id="taskList">
+            <li class="empty-message">
+                <span>📋</span>
+                لا توجد مهام<br />أضف مهمتك الأولى الآن!
+            </li>
+        </ul>
+
+        <div class="footer">
+            ✨ أنجزت اليوم <span id="todayCount">0</span> مهام
+        </div>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function render() {
+            const list = document.getElementById('taskList');
+            const total = document.getElementById('totalTasks');
+            const done = document.getElementById('doneTasks');
+            const todayCount = document.getElementById('todayCount');
+
+            if (tasks.length === 0) {
+                list.innerHTML = `
+                    <li class="empty-message">
+                        <span>📋</span>
+                        لا توجد مهام<br />أضف مهمتك الأولى الآن!
+                    </li>
+                `;
+            } else {
+                list.innerHTML = '';
+                tasks.forEach((t, i) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="task-text ${t.done ? 'done' : ''}">${t.text}</span>
+                        <div class="actions">
+                            <button class="done-btn" onclick="toggleTask(${i})">${t.done ? '↩️' : '✅'}</button>
+                            <button class="delete-btn" onclick="deleteTask(${i})">🗑️</button>
+                        </div>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+
+            const doneCount = tasks.filter(t => t.done).length;
+            total.textContent = tasks.length;
+            done.textContent = doneCount;
+
+            // اليوم
+            const today = new Date().toDateString();
+            const todayTasks = tasks.filter(t => {
+                const taskDate = new Date(t.date || '').toDateString();
+                return taskDate === today && t.done;
+            });
+            todayCount.textContent = todayTasks.length;
+
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            if (input.value.trim()) {
+                tasks.push({
+                    text: input.value.trim(),
+                    done: false,
+                    date: new Date().toISOString()
+                });
+                input.value = '';
+                render();
+                input.focus();
+            }
+        }
+
+        function toggleTask(i) {
+            tasks[i].done = !tasks[i].done;
+            if (tasks[i].done) {
+                tasks[i].date = new Date().toISOString();
+            }
+            render();
+        }
+
+        function deleteTask(i) {
+            if (confirm('🗑️ هل تريد حذف هذه المهمة؟')) {
+                tasks.splice(i, 1);
+                render();
+            }
+        }
+
+        // ضغط Enter للإضافة
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addTask();
+        });
+
+        render();
+    </script>
+</body>
+</html>
