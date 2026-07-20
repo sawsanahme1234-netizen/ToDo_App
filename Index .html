@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>مذكرتي</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; direction: rtl; }
+        input, button { padding: 10px; margin: 5px; }
+        ul { list-style: none; padding: 0; }
+        li { background: #f4f4f4; margin: 5px auto; width: 300px; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; }
+        .done { text-decoration: line-through; color: gray; }
+    </style>
+</head>
+<body>
+    <h1>📝 مذكرتي</h1>
+    <input type="text" id="taskInput" placeholder="اكتب المهمة...">
+    <button onclick="addTask()">➕ أضف</button>
+    <ul id="taskList"></ul>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function render() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            tasks.forEach((t, i) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="${t.done ? 'done' : ''}">${t.text}</span>
+                    <span>
+                        <button onclick="toggleTask(${i})">✅</button>
+                        <button onclick="deleteTask(${i})">🗑️</button>
+                    </span>
+                `;
+                list.appendChild(li);
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            if (input.value.trim()) {
+                tasks.push({ text: input.value.trim(), done: false });
+                input.value = '';
+                render();
+            }
+        }
+
+        function toggleTask(i) { tasks[i].done = !tasks[i].done; render(); }
+        function deleteTask(i) { tasks.splice(i, 1); render(); }
+
+        render();
+    </script>
+</body>
+</html>
